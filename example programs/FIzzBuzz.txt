@@ -1,0 +1,157 @@
+// This is fizz buzz it my custom assembly
+// add "FizzBuzz" to stack
+ALOC 10
+SET R7 0
+// R7 = ST + 0, we save ST in R7 for later
+ADD R7 ST R7
+SET R0 70 // 'F'
+SAV R0 0(ST) // saving 'F' to stack
+SET R0 105 // 'i'
+SAV R0 1(ST)
+SET R0 122 // 'z'
+SAV R0 2(ST)
+SET R0 122 // 'z'
+SAV R0 3(ST)
+SET R0 66 // 'B'
+SAV R0 4(ST)
+SET R0 117 // 'u'
+SAV R0 5(ST)
+SET R0 122 // 'z'
+SAV R0 6(ST)
+SET R0 122 // 'z'
+SAV R0 7(ST)
+SET R0 10
+SAV R0 8(ST)
+SET R0 0 // null
+SAV R0 9(ST) // saving null to stack
+// add "Fizz" to stack
+ALOC 6
+SET R8 0
+// R8 = ST + 0, we save ST in R8 for later
+ADD R8 ST R8
+SET R0 70 // 'F'
+SAV R0 0(ST) // saving 'F' to stack
+SET R0 105 // 'i'
+SAV R0 1(ST)
+SET R0 122 // 'z'
+SAV R0 2(ST)
+SET R0 122 // 'z'
+SAV R0 3(ST)
+SET R0 10
+SAV R0 4(ST)
+SET R0 0 // null
+SAV R0 5(ST) // saving null to stack
+// add "Buzz" to stack
+ALOC 6
+SET R9 0
+// R9 = ST + 0, we save ST in R9 for later
+ADD R9 ST R9
+SET R0 66 // 'B'
+SAV R0 0(ST)
+SET R0 117 // 'u'
+SAV R0 1(ST)
+SET R0 122 // 'z'
+SAV R0 2(ST)
+SET R0 122 // 'z'
+SAV R0 3(ST)
+SET R0 10
+SAV R0 4(ST)
+SET R0 0 // null
+SAV R0 5(ST) // saving null to stack
+
+// main loop
+SET R5 1 // i = 1 (R5)
+SET R6 101 // 101 (R6)
+FOR:
+// compute i % 3
+SET R0 0
+ADD R0 R5 R0
+SET R1 3
+CPT 0
+JNC DIV
+ALOC 1
+SAV R1 0(ST)
+// compute i % 5
+SET R0 0
+ADD R0 R5 R0
+SET R1 5
+CPT 0
+JNC DIV
+LOD R0 0(ST)
+ALOC -1
+// now, R0=i%3,R1=i%5
+// compute i%3==0 and i%5==0
+EQI R0 0
+SWAP CN R0
+EQI R1 0
+SWAP CN R1
+// evaluate if conditions
+AND R0 R1
+JWC FIZZBUZZ
+EQI R0 1
+JWC FIZZ
+EQI R1 1
+JWC BUZZ
+// conditions
+ELSE:
+SET R1 0
+ADD R1 ST R1 // R1 = ST
+SET R0 0
+ADD R0 R5 R0
+CAST R0
+ALOC 2
+SET R2 10
+SAV R2 0(ST)
+SET R2 0
+SAV R2 1(ST)
+CCAT R0 ST R0
+PRNT R0
+SWAP R1 ST
+JNC EXIT_IF
+FIZZBUZZ:
+PRNT R7
+JNC EXIT_IF
+FIZZ:
+PRNT R8
+JNC EXIT_IF
+BUZZ:
+PRNT R9
+EXIT_IF:
+// end of loop
+INC R5 1 // i++
+// check if R5 != R6
+EQV R5 R6
+EQI CN 0
+JWC FOR // loop
+JNC END // program end after end of loop
+
+// Division Subroutine
+DIV:
+// R0: dividend, R1: divisor
+// R2: quotient, R3: quotient*divisor, R4:temp
+SET R2 0
+SET R3 0
+SET R4 0
+DIV_LOOP:
+ADD R3 R1 R4
+GRT R4 R0 // CN=((++quotient)*divisor>dividend)
+JWC EXIT_DIV_LOOP
+SWAP R4 R3
+INC R2 1
+JNC DIV_LOOP
+EXIT_DIV_LOOP:
+// compute the remainder
+SET R4 0
+REMAINDER_LOOP:
+EQV R3 R0 // quotient*divisor+remm==dividend
+JWC EXIT_REMAINDER_LOOP
+INC R3 1
+INC R4 1
+JNC REMAINDER_LOOP
+EXIT_REMAINDER_LOOP:
+// set R0 to quotient and R1 to remainder
+SWAP R0 R2
+SWAP R1 R4
+RTN
+
+END:

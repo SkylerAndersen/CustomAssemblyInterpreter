@@ -1,0 +1,153 @@
+SOUND PROGRAM:
+// sound program (plays happy birthday)
+// plays piano notes: (nx2 means twice as long)
+// ggagcbx2
+// ggagdcx2
+// ggGecba
+// FFecdc
+// with tones:
+// 98,98,110,98,130,123x2
+// 98,98,110,98,147,130x2
+// 98,98,196,165,130,124,110
+// 175,175,165,130,147,130
+
+// allocate the memory to the stack
+ALOC 26 // number of notes plus a null
+
+// add the notes and durations to stack
+// R0 saves the first notes frequency, 98Hz
+// R1 saves the duration, 250ms, 0.25s
+// packs the lowest 16 bytes from each into PK
+// saves to stack
+SET R0 9800
+SET R1 250
+PACK R0 R1 16
+SAV PK 0(ST)
+
+SET R0 9800
+SET R1 250
+PACK R0 R1 16
+SAV PK 1(ST)
+
+SET R0 11000
+SET R1 250
+PACK R0 R1 16
+SAV PK 2(ST)
+
+SET R0 9800
+SET R1 250
+PACK R0 R1 16
+SAV PK 3(ST)
+
+SET R0 13000
+SET R1 250
+PACK R0 R1 16
+SAV PK 4(ST)
+
+SET R0 12300
+SET R1 500 // 500ms = 0.5s is twice as long
+PACK R0 R1 16
+SAV PK 5(ST)
+
+SET R0 9800
+SET R1 250
+PACK R0 R1 16
+SAV PK 6(ST)
+
+SET R0 9800
+SET R1 250
+PACK R0 R1 16
+SAV PK 7(ST)
+
+SET R0 11000
+SET R1 250
+PACK R0 R1 16
+SAV PK 8(ST)
+
+SET R0 9800
+SET R1 250
+PACK R0 R1 16
+SAV PK 9(ST)
+
+SET R0 14700
+SET R1 250
+PACK R0 R1 16
+SAV PK 10(ST)
+
+SET R0 13000
+SET R1 500
+PACK R0 R1 16
+SAV PK 11(ST)
+
+SET R0 9800
+SET R1 250
+PACK R0 R1 16
+SAV PK 12(ST)
+
+SET R0 9800
+SET R1 250
+PACK R0 R1 16
+SAV PK 13(ST)
+
+SET R0 19600
+SET R1 250
+PACK R0 R1 16
+SAV PK 14(ST)
+
+SET R0 16500
+SET R1 250
+PACK R0 R1 16
+SAV PK 15(ST)
+
+SET R0 13000
+SET R1 250
+PACK R0 R1 16
+SAV PK 16(ST)
+
+SET R0 12400
+SET R1 250
+PACK R0 R1 16
+SAV PK 17(ST)
+
+SET R0 11000
+SET R1 250
+PACK R0 R1 16
+SAV PK 18(ST)
+
+SET R0 17500
+SET R1 250
+PACK R0 R1 16
+SAV PK 19(ST)
+
+SET R0 17500
+SET R1 250
+PACK R0 R1 16
+SAV PK 20(ST)
+
+SET R0 16500
+SET R1 250
+PACK R0 R1 16
+SAV PK 21(ST)
+
+SET R0 13000
+SET R1 250
+PACK R0 R1 16
+SAV PK 22(ST)
+
+SET R0 14700
+SET R1 250
+PACK R0 R1 16
+SAV PK 23(ST)
+
+SET R0 13000
+SET R1 1000
+PACK R0 R1 16
+SAV PK 24(ST)
+
+// null in binary
+// saving null to the end of our song
+SET R0 0
+SAV R0 25(ST)
+
+// playing our song
+PLAY ST
